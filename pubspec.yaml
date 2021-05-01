@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   http:
-  file_picker:
+  #file_picker:
   path_provider:
   cached_network_image:
   splashscreen:
