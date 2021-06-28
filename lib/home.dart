@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:human_generator/drawingarea.dart';
 import 'package:human_generator/splashscreen.dart';
 
 class Home extends StatefulWidget {
@@ -7,6 +8,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<DrawingArea> points = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +47,57 @@ class _HomeState extends State<Home> {
                           blurRadius: 5.0,
                           spreadRadius: 1)
                     ]),
+                child: GestureDetector(
+                  onPanDown: (details) {
+                    this.setState(
+                      () {
+                        points.add(
+                          DrawingArea(
+                            point: details.localPosition,
+                            areaPaint: Paint()
+                              ..strokeCap = StrokeCap.round
+                              ..isAntiAlias = true
+                              ..color = Colors.white
+                              ..strokeWidth = 2.0,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  onPanUpdate: (details) {
+                    this.setState(
+                      () {
+                        points.add(
+                          DrawingArea(
+                            point: details.localPosition,
+                            areaPaint: Paint()
+                              ..strokeCap = StrokeCap.round
+                              ..isAntiAlias = true
+                              ..color = Colors.white
+                              ..strokeWidth = 2.0,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  onPanEnd: (details) {
+                    this.setState(
+                      () {
+                        points.add(null);
+                      },
+                    );
+                  },
+                  child: SizedBox.expand(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      child: CustomPaint(
+                        painter: MyCustomPainter(points: points),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
